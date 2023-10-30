@@ -1,0 +1,6 @@
+<launch>
+
+  <!-- Show in Rviz   -->
+  <node name="rviz" pkg="rviz" type="rviz" args="-d $(find class4_sensor_fuse)/rviz_config/first_rviz_config.rviz"/>
+
+</launch>

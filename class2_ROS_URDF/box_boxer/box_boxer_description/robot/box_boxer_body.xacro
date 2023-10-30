@@ -1,0 +1,130 @@
+<?xml version="1.0"?>
+<robot xmlns:xacro="http://www.ros.org/wiki/xacro">
+
+    <xacro:macro  name="box_boxer_body" params="x y z yaw shoulder_link_pitch_angle">
+      
+      <link name="world">
+      </link>
+
+      <!-- Link to Pin the robot to the ground-->
+
+      <joint name="base_link_joint" type="fixed">
+        <origin rpy="0 0 ${yaw}" xyz="${x} ${y} ${base_link_length + z}" />
+        <parent link="world" />
+        <child link="base_link" />
+      </joint>
+
+      <link name="base_link">
+        <inertial>
+          <mass value="${base_link_mass}"/>
+          <origin rpy="0 0 0" xyz="0 0 0"/>
+          <xacro:cylinder_inertia mass="${base_link_mass}" r="${base_link_radius}" l="${base_link_length}"/>
+        </inertial>
+        <collision name="collision_base_link">
+          <geometry>
+            <cylinder radius="${base_link_radius}" length="${base_link_length}"/>
+          </geometry>
+        </collision>
+        <visual name="visual_base_link">
+          <geometry>
+            <mesh filename="package://box_boxer_description/meshes//mech_drone/industrialbase.dae"  scale="${base_link_radius*2.0} ${base_link_radius*2.0} ${base_link_radius*2.0}"/>
+          </geometry>
+        </visual>
+      </link>
+
+
+      <!-- HIP -->
+
+      <joint name="hip_joint" type="fixed">
+        <origin rpy="0 0 0" xyz="0 0 ${base_link_length / 2.0 + hip_link_length / 2.0}" />
+        <parent link="base_link" />
+        <child link="hip_link" />
+      </joint>
+
+      <link name="hip_link">
+        <inertial>
+          <mass value="${hip_link_mass}"/>
+          <origin rpy="0 0 0" xyz="0 0 0"/>
+          <xacro:cylinder_inertia mass="${hip_link_mass}" r="${hip_link_radius}" l="${hip_link_length}"/>
+        </inertial>
+        <collision name="collision_hip_link">
+          <geometry>
+            <cylinder radius="${hip_link_radius}" length="${hip_link_length}"/>
+          </geometry>
+        </collision>
+        <visual name="visual_hip_link">
+          <geometry>
+            <mesh filename="package://box_boxer_description/meshes//mech_drone/hip.dae"  scale="${hip_link_radius} ${hip_link_radius} ${hip_link_length}"/>
+          </geometry>
+        </visual>
+      </link>
+
+
+      <!-- CHEST -->
+
+      <joint name="chest_joint" type="fixed">
+        <origin rpy="0 0 0" xyz="0 0 ${hip_link_length / 2.0 + chest_link_z / 2.0}" />
+        <parent link="hip_link" />
+        <child link="chest_link" />
+      </joint>
+
+      <link name="chest_link">
+        <inertial>
+          <mass value="${chest_link_mass}"/>
+          <origin rpy="0 0 0" xyz="0 0 0"/>
+          <xacro:box_inertia mass="${chest_link_mass}" x="${chest_link_x}" y="${chest_link_y}" z="${chest_link_z}"/>
+        </inertial>
+        <collision name="collision_chest_link">
+          <geometry>
+          <box size="${chest_link_x} ${chest_link_y} ${chest_link_z}"/>
+          </geometry>
+        </collision>
+        <visual name="visual_chest_link">
+          <geometry>          
+            <mesh filename="package://box_boxer_description/meshes//mech_drone/body_chest.dae"  scale="${chest_link_x} ${chest_link_y} ${chest_link_z}"/>
+          </geometry>
+        </visual>
+      </link>
+
+
+      <xacro:box_boxer_shoulder side="L" shoulder_link_pitch_angle="${shoulder_link_pitch_angle}"/>
+      <xacro:box_boxer_shoulder side="R" shoulder_link_pitch_angle="${shoulder_link_pitch_angle}"/>
+
+    </xacro:macro >
+   
+
+    <xacro:macro  name="box_boxer_shoulder" params="side shoulder_link_pitch_angle">
+
+      <joint name="shoulder_${side}_joint" type="fixed">
+          <xacro:if value="${side == 'R'}">
+            <origin rpy="${shoulder_link_pitch_angle} 0 ${shoulder_link_yaw_angle}" xyz="${-1.0 * chest_link_x / PHI} ${-1.0 * chest_link_y / 2.0} 0.0" />
+          </xacro:if>
+          <xacro:unless value="${side == 'R'}">
+              <origin rpy="${shoulder_link_pitch_angle} 0 ${-1.0*shoulder_link_yaw_angle}" xyz="${chest_link_x / PHI} ${-1.0 * chest_link_y / 2.0} 0.0" />
+          </xacro:unless>  
+          
+          <parent link="chest_link" />
+          <child link="shoulder_${side}_link" />
+        </joint>
+
+        <link name="shoulder_${side}_link">
+          <inertial>
+            <mass value="${shoulder_link_mass}"/>
+            <origin rpy="0 0 0" xyz="0 0 0"/>
+            <xacro:box_inertia mass="${shoulder_link_mass}" x="${shoulder_link_x}" y="${shoulder_link_y}" z="${shoulder_link_z}"/>
+          </inertial>
+          <collision name="collision_shoulder_${side}_link">
+            <geometry>
+            <box size="${shoulder_link_x} ${shoulder_link_y} ${shoulder_link_z}"/>
+            </geometry>
+          </collision>
+          <visual name="visual_shoulder_${side}_link">
+            <geometry>
+              <mesh filename="package://box_boxer_description/meshes//mech_drone/piston.dae"  scale="${shoulder_link_x} ${shoulder_link_y} ${shoulder_link_z}"/>
+            </geometry>
+          </visual>
+        </link>
+
+    </xacro:macro >
+
+</robot>

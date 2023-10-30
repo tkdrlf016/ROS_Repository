@@ -1,0 +1,27 @@
+<launch>
+
+    <arg name="boxer_name" default="little_mech"/>
+
+    <group ns="$(arg boxer_name)">
+
+        <rosparam file="$(find box_boxer_description)/config/box_boxer.yaml"
+            command="load"/>
+
+        <node name="controller_spawner" pkg="controller_manager" type="spawner" respawn="false"
+        output="screen" args="joint_state_controller 
+                                glove_R_joint_position_controller
+                                glove_L_joint_position_controller
+                                neck_1_joint_position_controller
+                                neck_2_joint_position_controller
+                                neck_3_joint_position_controller
+                                neck_4_joint_position_controller
+                                neck_5_joint_position_controller">
+        </node>
+
+
+    </group>
+
+    
+	
+ 		  
+</launch>

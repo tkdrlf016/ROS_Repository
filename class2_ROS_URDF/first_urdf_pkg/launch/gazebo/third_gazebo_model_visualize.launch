@@ -1,0 +1,5 @@
+<launch>
+
+  <node name="rviz" pkg="rviz" type="rviz" args="-d $(find first_urdf_pkg)/rviz_config/gazebo.rviz"/>
+
+</launch>

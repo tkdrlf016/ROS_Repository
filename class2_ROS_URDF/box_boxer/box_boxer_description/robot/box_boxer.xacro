@@ -1,0 +1,39 @@
+<?xml version="1.0" ?>
+<robot name="box_boxer" xmlns:xacro="http://www.ros.org/wiki/xacro">
+
+  <xacro:include filename="$(find box_boxer_description)/robot/materials.xacro" />
+  <xacro:include filename="$(find box_boxer_description)/robot/properties.xacro" />
+  <xacro:include filename="$(find box_boxer_description)/robot/macros.xacro" />
+  <xacro:include filename="$(find box_boxer_description)/robot/box_boxer_body.xacro" />
+  <xacro:include filename="$(find box_boxer_description)/robot/box_boxer_head.xacro" />
+  <xacro:include filename="$(find box_boxer_description)/robot/box_boxer_gloves.xacro" />
+  <xacro:include filename="$(find box_boxer_description)/robot/box_boxer.gazebo" />
+  <xacro:include filename="$(find box_boxer_description)/robot/sensors.gazebo" />
+
+  <xacro:arg name="x_pos" default="0.0" />
+  <xacro:arg name="y_pos" default="0.0" />
+  <xacro:arg name="z_pos" default="0.0" />
+  <xacro:arg name="yaw_pos" default="0.0" />
+  <xacro:arg name="boxer_name" default="1" />
+  <xacro:arg name="boxer_id" default="1" />
+  <xacro:arg name="shoulder_link_pitch_angle" default="0.0"/>
+
+
+  <xacro:box_boxer_body x="$(arg x_pos)" y="$(arg y_pos)" z="$(arg z_pos)" yaw="$(arg yaw_pos)" shoulder_link_pitch_angle="$(arg shoulder_link_pitch_angle)"/>
+
+  <xacro:neck_loop items="${neck_indexes}"/>
+
+  <xacro:box_boxer_head last_neck_link="neck_5_link" face_id="$(arg boxer_id)"/>
+
+  <xacro:gloves parent="shoulder_R_link" glove_side="R" colour_id="2" max_reach="${glove_max_reach}" max_force="${glove_max_force}" max_vel="${glove_max_vel}"/>
+  <xacro:gloves parent="shoulder_L_link" glove_side="L" colour_id="2" max_reach="${glove_max_reach}" max_force="${glove_max_force}" max_vel="${glove_max_vel}"/>
+
+  <xacro:box_boxer_control boxer_name="$(arg boxer_name)"/>
+
+  <xacro:sensor_intel_d435 prefix="$(arg boxer_name)" parent="head_link" prefix_topic="$(arg boxer_name)/camera">
+    <origin xyz="0 ${-1.0*head_link_z/4.0} ${head_link_y/2.0 - camera_box_y*3.0}" rpy="${PI/2} ${-1.0*PI/2} 0" />
+  </xacro:sensor_intel_d435>
+
+
+
+</robot>

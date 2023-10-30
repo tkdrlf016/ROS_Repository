@@ -1,0 +1,18 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<launch>
+    <group ns="rviz">
+        <arg name="model" default="$(find first_tf_pkg)/urdf/test_bot_rviz.urdf"/>
+
+        <param name="robot_description" command="cat $(arg model)" />
+        
+        <node name="robot_state_publisher" pkg="robot_state_publisher" type="robot_state_publisher"/>
+    
+        <!--로봇의 tf들을 결합시킵니다-->
+        <!--<node name="joint_state_publisher_gui" pkg="joint_state_publisher_gui" type="joint_state_publisher_gui"/>-->
+        <node name="joint_state_publisher" pkg="joint_state_publisher" type="joint_state_publisher"/>
+        <!--로봇의 조인트정보를 토픽으로 발행합니다. 하지만 fix 조인트는 발행되지않습니다-->
+    </group>
+
+    <node name="rviz" pkg="rviz" type="rviz" args="-d $(find first_tf_pkg)/rviz_config/first_rviz_config.rviz"/>
+    
+</launch>

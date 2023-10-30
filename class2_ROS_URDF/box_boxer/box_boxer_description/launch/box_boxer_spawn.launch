@@ -1,0 +1,44 @@
+<launch>
+	
+	<arg name="x" default="0.0" />
+    <arg name="y" default="0.0" />
+    <arg name="z" default="0.0" />
+    <arg name="roll" default="0"/>
+    <arg name="pitch" default="0"/>
+    <arg name="yaw" default="0.0" />
+
+	<arg name="model" default="$(find box_boxer_description)/robot/box_boxer.xacro"/>
+
+	<arg name="boxer_name" default="little_mech"/>
+
+	<arg name="boxer_id" default="1" />
+
+	<arg name="shoulder_link_pitch_angle" default="0.0" />
+	
+	
+
+	<group ns="$(arg boxer_name)">
+		<!-- 
+		Converts the xacro robot information to UDRF and use it as a robot_description parameter
+		-->
+		<param name="robot_description" command="$(find xacro)/xacro --inorder $(arg model) x_pos:=$(arg x) y_pos:=$(arg y) z_pos:=$(arg z) yaw_pos:=$(arg yaw) boxer_id:=$(arg boxer_id) boxer_name:=$(arg boxer_name) shoulder_link_pitch_angle:=$(arg shoulder_link_pitch_angle)" />
+
+		<node name="robot_state_publisher_box_boxer" pkg="robot_state_publisher" type="robot_state_publisher"
+			respawn="false" output="screen">
+			<param name="publish_frequency" type="double" value="5.0" />
+		</node>
+
+		<node name="urdf_spawner"
+				pkg="gazebo_ros"
+				type="spawn_model"
+				respawn="false"
+				output="screen"
+				args="-urdf -model $(arg boxer_name) -param robot_description"/>
+
+
+    </group>
+
+
+
+ 		  
+</launch>

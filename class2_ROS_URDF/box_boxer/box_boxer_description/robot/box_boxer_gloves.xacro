@@ -1,0 +1,60 @@
+<?xml version="1.0"?>
+<robot xmlns:xacro="http://www.ros.org/wiki/xacro">
+
+
+  <xacro:macro  name="gloves" params="parent glove_side colour_id max_reach max_force max_vel">
+
+      <joint name="glove_${glove_side}_joint" type="prismatic">
+        <parent link="${parent}"/>
+        <child link="glove_${glove_side}_link"/>
+        <limit lower="0.0" upper="${max_reach}" effort="${max_force}" velocity="${max_vel}"/>
+        <origin xyz="0 ${-1.0*shoulder_link_y/2.0 - glove_link_radius} 0" rpy="1.57 0 0"/>
+        <axis xyz="0 0 1"/>
+      </joint>
+
+      <transmission name="glove_${glove_side}_joint_trans">
+      <type>transmission_interface/SimpleTransmission</type>
+      <joint name="glove_${glove_side}_joint">
+        <hardwareInterface>hardware_interface/EffortJointInterface</hardwareInterface>
+      </joint>
+      <actuator name="glove_${glove_side}_joint_Motor">
+        <hardwareInterface>hardware_interface/EffortJointInterface</hardwareInterface>
+        <mechanicalReduction>1</mechanicalReduction>
+      </actuator>
+    </transmission>
+
+
+      <link name="glove_${glove_side}_link">        
+        <inertial>        
+          <origin xyz="0 0 0" rpy="0 0 0" />
+          <mass value="${glove_link_mass}"/>
+          <origin rpy="0 0 0" xyz="0 0 0"/>
+          <xacro:sphere_inertia mass="${glove_link_mass}" r="${glove_link_radius}"/>
+        </inertial>
+        <collision name="collision_glove_${glove_side}_link">
+          <origin xyz="0 0 0" rpy="0 0 0" />
+          <geometry>
+            <sphere radius="${glove_link_radius}"/>
+          </geometry>
+        </collision>
+        <visual name="visual_glove_${glove_side}_link">
+          <origin xyz="0 0 0" rpy="0 0 0" />
+          <geometry>
+              <mesh filename="package://box_boxer_description/meshes/gloves_${colour_id}_${glove_side}.dae"  scale="${glove_scale_x} ${glove_scale_y} ${glove_scale_z}"/>
+          </geometry>
+        </visual>
+      </link>
+
+
+    <gazebo reference="glove_${glove_side}_link">
+      <kp>${glove_kp}</kp>
+      <kd>${glove_kp}</kd>
+      <mu1>${glove_mu1}</mu1>
+      <mu2>${glove_mu2}</mu2>
+      <selfCollide>true</selfCollide>
+    </gazebo>
+
+
+  </xacro:macro >
+
+</robot>

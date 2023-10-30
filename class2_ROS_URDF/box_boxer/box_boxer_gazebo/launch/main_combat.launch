@@ -1,0 +1,29 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<launch>
+
+	<include file="$(find box_boxer_gazebo)/launch/start_world.launch"/>
+	<include file="$(find box_boxer_gazebo)/launch/robot_spawn.launch">
+		<arg name="x" value="0.7"/>
+		<arg name="y" value="0.0"/>
+		<arg name="z" value="0"/>
+		<arg name="roll" value="0"/>
+		<arg name="pitch" value="0"/>
+		<arg name="yaw" value="-1.57" />
+		<arg name="boxer_name" value="little_mech" />
+		<arg name="boxer_id" value="1" />
+		<arg name="shoulder_link_pitch_angle" value="-0.4" />
+	</include>
+	<include file="$(find box_boxer_gazebo)/launch/robot_spawn.launch">
+		<arg name="x" value="-0.7"/>
+		<arg name="y" value="0.0"/>
+		<arg name="z" value="0"/>
+		<arg name="roll" value="0"/>
+		<arg name="pitch" value="0"/>
+		<arg name="yaw" value="1.57" />
+		<arg name="boxer_name" value="big_mech" />
+		<arg name="boxer_id" value="2" />
+		<arg name="shoulder_link_pitch_angle" value="-0.4" />
+	</include>
+	
+
+</launch>

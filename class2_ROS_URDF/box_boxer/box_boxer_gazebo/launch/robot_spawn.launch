@@ -1,0 +1,34 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<launch>
+
+    <arg name="x" default="0.0"/>
+    <arg name="y" default="0.0"/>
+    <arg name="z" default="0"/>
+    <arg name="roll" default="0"/>
+    <arg name="pitch" default="0"/>
+    <arg name="yaw" default="0" />
+    <arg name="boxer_name" default="little_mech" />
+    <arg name="boxer_id" default="1" />
+    <arg name="shoulder_link_pitch_angle" default="0.0" />
+    
+
+	<include file="$(find box_boxer_description)/launch/box_boxer_spawn.launch">
+		<arg name="x" value="$(arg x)" />
+        <arg name="y" value="$(arg y)" />
+        <arg name="z" value="$(arg z)" />
+        <arg name="roll" value="$(arg roll)"/>
+        <arg name="pitch" value="$(arg pitch)"/>
+        <arg name="yaw" value="$(arg yaw)" />
+		<arg name="model" value="$(find box_boxer_description)/robot/box_boxer.xacro"/>
+        <arg name="boxer_name" value="$(arg boxer_name)"/>
+        <arg name="boxer_id" value="$(arg boxer_id)" />
+        <arg name="shoulder_link_pitch_angle" value="$(arg shoulder_link_pitch_angle)" />
+	</include>
+
+    <include file="$(find box_boxer_description)/launch/box_boxer_control.launch">
+        <arg name="boxer_name" value="$(arg boxer_name)"/>
+	</include>
+
+
+
+</launch>

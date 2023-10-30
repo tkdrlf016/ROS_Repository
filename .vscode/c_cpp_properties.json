@@ -1,0 +1,25 @@
+{
+  "configurations": [
+    {
+      "browse": {
+        "databaseFilename": "${default}",
+        "limitSymbolsToIncludedHeaders": false
+      },
+      "includePath": [
+        "/opt/ros/noetic/include/**",
+        "/home/kim/study_ws2/devel/include/**",
+        "/home/kim/study_ws2/src/act_sercli_example_pkg_c/include/**",
+        "/home/kim/study_ws2/src/pubsub_example_pkg_c/include/**",
+        "/home/kim/study_ws2/src/ros_begin_c/include/**",
+        "/home/kim/study_ws2/src/sercli_exmaple_pkg_c/include/**",
+        "/usr/include/**"
+      ],
+      "name": "ROS",
+      "intelliSenseMode": "gcc-x64",
+      "compilerPath": "/usr/bin/gcc",
+      "cStandard": "gnu11",
+      "cppStandard": "c++14"
+    }
+  ],
+  "version": 4
+}

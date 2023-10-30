@@ -1,0 +1,10 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<launch>
+    <include file="$(find first_urdf_pkg)/launch/gazebo/spawn_xacro.launch">
+        <arg name="x" value="0.0" />
+        <arg name="y" value="0.0" />
+        <arg name="z" value="0.2" />
+        <arg name="xacro_file_path" value="$(find first_urdf_pkg)/robot/fourth_model.xacro" />
+        <arg name="robot_name" value="gurdy" />
+    </include>
+</launch>

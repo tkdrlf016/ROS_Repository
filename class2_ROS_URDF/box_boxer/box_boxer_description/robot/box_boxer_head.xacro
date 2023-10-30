@@ -1,0 +1,107 @@
+<?xml version="1.0"?>
+<robot xmlns:xacro="http://www.ros.org/wiki/xacro">
+
+    <!-- Macro for creating Neck Multiple joints-->
+
+    <xacro:macro  name="box_boxer_neck_joint" params="parent neck_id displacement">
+      
+      <joint name="neck_${neck_id}_joint" type="revolute">
+        <parent link="${parent}"/>
+        <child link="neck_${neck_id}_link"/>
+        <origin xyz="0 0 ${displacement}" rpy="0 0 0"/>
+        <axis xyz="1 0 0"/>
+        <limit lower="${neck_joint_lim_low}" upper="${neck_joint_lim_up}" effort="${neck_joint_effort}" velocity="${neck_joint_vel}"/>
+      </joint>
+
+      <link name="neck_${neck_id}_link">
+        <inertial>
+          <mass value="${neck_link_mass}"/>
+          <origin rpy="0 0 0" xyz="0 0 0"/>
+          <xacro:cylinder_inertia mass="${neck_link_mass}" r="${neck_link_radius}" l="${neck_link_length}"/>
+        </inertial>
+        <collision name="collision_neck_${neck_id}_link">
+          <geometry>
+            <cylinder radius="${neck_link_radius}" length="${neck_link_length}"/>
+          </geometry>
+        </collision>
+        <visual name="visual_neck_${neck_id}_link">
+          <geometry>
+            <mesh filename="package://box_boxer_description/meshes//mech_drone/joint.dae"  scale="${neck_link_radius} ${neck_link_radius} ${neck_link_length}"/>
+          </geometry>
+        </visual>
+      </link>
+
+
+      <transmission name="neck_${neck_id}_joint_trans">
+        <type>transmission_interface/SimpleTransmission</type>
+        <joint name="neck_${neck_id}_joint">
+          <hardwareInterface>hardware_interface/EffortJointInterface</hardwareInterface>
+        </joint>
+        <actuator name="neck_${neck_id}_joint_Motor">
+          <hardwareInterface>hardware_interface/EffortJointInterface</hardwareInterface>
+          <mechanicalReduction>1</mechanicalReduction>
+        </actuator>
+      </transmission>
+
+    </xacro:macro >
+
+
+    <xacro:macro name="neck_loop" params="items:=^">
+        <xacro:if value="${items}">
+                <!-- pop first item from list -->
+                <xacro:property name="item" value="${items.pop(0)}"/>
+
+                <!-- We check the Integer value , therefore no '' -->
+                <xacro:if value="${item == 1}">
+                  <!-- If its the first neck link, we need to link it to the body-->
+                  <xacro:box_boxer_neck_joint parent="chest_link" neck_id="${item}" displacement="${chest_link_z/ 2.0 + neck_link_length}"/>
+                </xacro:if>
+                <xacro:unless value="${item == 1}">
+                  <!-- If not, we link it to the previous link-->
+                  <xacro:box_boxer_neck_joint parent="neck_${item - 1}_link" neck_id="${item}" displacement="${neck_link_length + neck_delta_length}"/>
+                </xacro:unless>                
+
+                <!-- recursively call myself -->
+                <xacro:neck_loop/>
+        </xacro:if>
+    </xacro:macro>
+
+    
+    <!-- Head Definition -->
+    <xacro:macro  name="box_boxer_head" params="last_neck_link face_id">
+      
+      <joint name="head_joint" type="fixed">
+        <parent link="${last_neck_link}"/>
+        <child link="head_link"/>
+        <origin xyz="0 0 ${head_displacement_z}" rpy="0 0 0"/>
+     </joint>
+
+      <link name="head_link">        
+        <inertial>        
+          <origin xyz="0 ${head_inertia_displacement_y} 0" rpy="0 0 0" />
+          <mass value="${head_link_mass}"/>
+          <origin rpy="0 0 0" xyz="0 0 0"/>
+          <xacro:box_inertia mass="${head_link_mass}" x="${head_link_x}" y="${head_link_y}" z="${head_link_z}"/>
+        </inertial>
+        <collision name="collision_head_link">
+          <origin xyz="0 0 0" rpy="0 0 0" />
+          <geometry>
+            <box size="${head_link_x} ${head_link_y} ${head_link_z}"/>
+          </geometry>
+        </collision>
+        <visual name="visual_head_link">
+          <origin xyz="0 0 0" rpy="0 0 0" />
+          <geometry>
+            <mesh filename="package://box_boxer_description/meshes/face_${face_id}.dae"  scale="${head_scale_x} ${head_scale_y} ${head_scale_z}"/>
+          </geometry>
+        </visual>
+      </link>
+
+      <gazebo reference="head_link">
+        <material>Gazebo/Green</material>
+      </gazebo>
+
+    </xacro:macro >
+   
+
+</robot>

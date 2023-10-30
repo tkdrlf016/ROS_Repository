@@ -1,0 +1,26 @@
+{
+  "configurations": [
+    {
+      "browse": {
+        "databaseFilename": "${default}",
+        "limitSymbolsToIncludedHeaders": false
+      },
+      "includePath": [
+        "/home/kim/study_ws2/devel/include/**",
+        "/opt/ros/noetic/include/**",
+        "/home/kim/study_ws2/src/class1_ROS_Basic/act_sercli_example_pkg_c/include/**",
+        "/home/kim/study_ws2/src/class1_ROS_Basic/pubsub_example_pkg_c/include/**",
+        "/home/kim/study_ws2/src/realsense_gazebo_plugin/include/**",
+        "/home/kim/study_ws2/src/class0_ROS_Beginng/ros_begin_c/include/**",
+        "/home/kim/study_ws2/src/class1_ROS_Basic/sercli_exmaple_pkg_c/include/**",
+        "/usr/include/**"
+      ],
+      "name": "ROS",
+      "intelliSenseMode": "gcc-x64",
+      "compilerPath": "/usr/bin/gcc",
+      "cStandard": "gnu11",
+      "cppStandard": "c++14"
+    }
+  ],
+  "version": 4
+}

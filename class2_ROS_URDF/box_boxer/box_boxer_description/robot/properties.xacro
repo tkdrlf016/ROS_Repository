@@ -1,0 +1,101 @@
+<?xml version="1.0"?>
+<robot xmlns:xacro="http://www.ros.org/wiki/xacro">
+
+	<!-- Constants -->
+	<xacro:property name="PI" value="3.1415926535897931"/>
+	
+	<!-- Golden Ratio -->
+	<xacro:property name="PHI" value="1.618033988749"/>
+	<xacro:property name="PHI2" value="${PHI*PHI}"/>
+	<xacro:property name="PHI3" value="${PHI2*PHI}"/>
+
+	<!-- base_link Properties -->
+	
+	<xacro:property name="base_link_radius" value="0.5"/>
+	<xacro:property name="base_link_length" value="0.1"/>
+	<xacro:property name="base_link_mass" value="1.0"/>
+
+
+	<!-- hip_link Properties -->
+	
+	<xacro:property name="hip_link_radius" value="0.1"/>
+	<xacro:property name="hip_link_length" value="0.3"/>
+	<xacro:property name="hip_link_mass" value="1.0"/>
+
+	<!-- chest_link Properties -->
+	<xacro:property name="chest_link_x" value="0.4"/>
+	<xacro:property name="chest_link_y" value="0.4"/>
+	<xacro:property name="chest_link_z" value="0.4"/>
+	<xacro:property name="chest_link_mass" value="1.0"/>
+
+	<!-- Neck Properties-->
+	<xacro:property name="neck_link_radius" value="${chest_link_x / PHI3}"/>
+	<xacro:property name="neck_link_length" value="0.04"/>
+	<xacro:property name="neck_delta_length" value="${neck_link_length / PHI2}"/>
+	
+	<xacro:property name="neck_link_mass" value="0.01"/>
+	<xacro:property name="neck_joint_lim_low" value="0.0"/>
+	<xacro:property name="neck_joint_lim_up" value="0.3"/>
+	<xacro:property name="neck_joint_effort" value="10.0"/>
+	<xacro:property name="neck_joint_vel" value="3.0"/>
+	<!-- define the list of neck links, it has to start with 1 and generate consecutive numbers -->
+    <xacro:property name="neck_indexes" value="${[1,2,3,4,5]}" />
+
+	<!-- HEAD Properties -->
+	<xacro:property name="head_link_mass" value="0.5"/>
+	<xacro:property name="head_link_x" value="0.3"/>
+	<xacro:property name="head_link_y" value="0.3"/>
+	<xacro:property name="head_link_z" value="0.3"/>
+	<!-- We use this to displace Inertia so that the head falls forwards always-->
+	<xacro:property name="head_inertia_displacement_y" value="${-1.0 * head_link_y / PHI}"/>
+	<xacro:property name="head_displacement_z" value="${head_link_z / PHI2}"/>
+	<!-- We use the collision box dimensions to allow the mesh to scale with it, but that mean sthat meshes have to be scaled to that originally-->
+	<xacro:property name="head_scale_x" value="${head_link_x}"/>
+	<xacro:property name="head_scale_y" value="${head_link_y}"/>
+	<xacro:property name="head_scale_z" value="${head_link_z}"/>
+
+	<!-- Glove Properties-->
+	
+	<xacro:property name="glove_link_mass" value="0.5"/>
+	<xacro:property name="glove_link_radius" value="0.15"/>
+	<!-- We mult by 2 because we scale based on full dimensiosn , diameter-->
+	<xacro:property name="glove_scale_x" value="${glove_link_radius*2.0}"/>
+	<xacro:property name="glove_scale_y" value="${glove_link_radius*2.0}"/>
+	<xacro:property name="glove_scale_z" value="${glove_link_radius*2.0}"/>
+	<xacro:property name="glove_kp" value="10.0"/>
+	<xacro:property name="glove_kp" value="10000.0"/>
+	<xacro:property name="glove_mu1" value="1000.0"/>
+	<xacro:property name="glove_mu2" value="10.0"/>
+	<xacro:property name="glove_max_reach" value="0.6"/>
+	<xacro:property name="glove_max_force" value="1000.0"/>
+	<xacro:property name="glove_max_vel" value="10.0"/>
+
+
+	<!-- Shoulder Properties -->
+	<xacro:property name="shoulder_link_mass" value="0.5"/>
+	<xacro:property name="shoulder_link_x" value="${chest_link_x / PHI2}"/>
+	<xacro:property name="shoulder_link_y" value="${chest_link_y / PHI2}"/>
+	<xacro:property name="shoulder_link_z" value="${chest_link_z / PHI2}"/>
+	<xacro:property name="shoulder_link_yaw_angle" value="0.3"/>
+	
+
+	
+	
+
+	<!-- Sensors -->
+    <xacro:property name="sensor_mass" value="0.01"/>
+    <xacro:property name="camera_box_x" value="0.02"/>
+    <xacro:property name="camera_box_y" value="0.01"/>
+    <xacro:property name="camera_box_z" value="0.01"/>
+	<!-- RGB sensor - cam -->
+    <xacro:property name="orbbec_astra_rel_rgb_px"   value="0.0" />
+    <xacro:property name="orbbec_astra_rel_rgb_py"   value="-0.0125" />
+    <xacro:property name="orbbec_astra_rel_rgb_pz"   value="-0.0150" />  
+    <!-- IR sensor - depth -->
+    <xacro:property name="orbbec_astra_depth_rel_rgb_px" value="0.0" />
+    <xacro:property name="orbbec_astra_depth_rel_rgb_py" value="0.0250" />
+    <xacro:property name="orbbec_astra_depth_rel_rgb_pz" value="0.0" />
+
+    <xacro:property name="M_PI" value="3.1415926535897931" />
+	
+</robot>
